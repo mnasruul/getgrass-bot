@@ -62,7 +62,8 @@ class Bot {
         : new SocksProxyAgent(formattedProxy);
 
       const wsURL = `wss://${this.config.wssHost}`;
-      const userAgent = fakeUa.getRandom();
+      const userAgent = fakeUa();
+      console.log(`User-Agent: ${userAgent}`.cyan);
       const ws = new WebSocket(wsURL, {
         agent,
         headers: {
@@ -167,7 +168,7 @@ class Bot {
         : new SocksProxyAgent(formattedProxy);
 
       const wsURL = `wss://${this.config.wssHost}`;
-      const userAgent = fakeUa.getRandom();
+      const userAgent = fakeUa();
       const ws = new WebSocket(wsURL, {
         agent,
         headers: {
@@ -274,7 +275,7 @@ class Bot {
         : new SocksProxyAgent(formattedProxy);
 
       const wsURL = `wss://${this.config.wssHost}`;
-      const userAgent = fakeUa.getRandom();
+      const userAgent = fakeUa();
       const ws = new WebSocket(wsURL, {
         agent,
         headers: {
