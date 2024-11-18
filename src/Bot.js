@@ -79,7 +79,7 @@ class Bot {
       });
 
       ws.on('open', () => {
-        console.log(`Connected to ${formattedProxy}`.cyan);
+        console.log(`Connected to ${formattedProxy} via Desktop`.cyan);
         console.log(`Proxy IP Info: ${JSON.stringify(proxyInfo)}`.magenta);
         this.sendPing(ws, proxyInfo.ip);
       });
@@ -185,7 +185,7 @@ class Bot {
       });
 
       ws.on('open', () => {
-        console.log(`Connected to ${formattedProxy}`.cyan);
+        console.log(`Connected to ${formattedProxy} via Lite`.cyan);
         console.log(`Proxy IP Info: ${JSON.stringify(proxyInfo)}`.magenta);
         this.sendPing(ws, proxyInfo.ip);
       });
@@ -292,7 +292,7 @@ class Bot {
       });
 
       ws.on('open', () => {
-        console.log(`Connected to ${formattedProxy}`.cyan);
+        console.log(`Connected to ${formattedProxy} via Node`.cyan);
         console.log(`Proxy IP Info: ${JSON.stringify(proxyInfo)}`.magenta);
         this.sendPing(ws, proxyInfo.ip);
       });

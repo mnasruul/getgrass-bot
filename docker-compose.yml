@@ -1,0 +1,8 @@
+
+
+services:
+  grassbot:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    restart: always
