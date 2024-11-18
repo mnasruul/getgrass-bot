@@ -18,8 +18,11 @@ async function main() {
   const config = new Config();
   const bot = new Bot(config);
 
-  const proxySource = await selectProxySource(inquirer);
-
+  // const proxySource = await selectProxySource(inquirer);
+const proxySource = {
+  type: 'file',
+  source: 'proxy.txt'
+}
   let proxies = [];
   if (proxySource.type === 'file') {
     proxies = await readLines(proxySource.source);
@@ -48,13 +51,26 @@ async function main() {
 
   console.log(`Loaded ${userIDs.length} user IDs\n`.green);
 
+  const methods = ["desktop", "lite", "node"];
+
   const connectionPromises = userIDs.flatMap((userID) =>
     proxySource.type !== 'none'
-      ? proxies.map((proxy) => bot.connectToProxy(proxy, userID))
+      ? proxies.flatMap((proxy) =>
+          methods.map((method) => {
+            if (method === "desktop") {
+              return bot.connectToProxy(proxy, userID);
+            } else if (method === "lite") {
+              return bot.connectToProxyLite(proxy, userID);
+            } else if (method === "node") {
+              return bot.connectToProxyNode(proxy, userID);
+            }
+          })
+        )
       : [bot.connectDirectly(userID)]
   );
-
+  
   await Promise.all(connectionPromises);
+  
 }
 
 main().catch(console.error);
