@@ -107,7 +107,7 @@ class Bot {
           );
         } else if (msg.action === 'PONG') {
           console.log(`Received PONG: ${JSON.stringify(msg)}`.blue);
-          pong_response = {"id": msg["id"], "origin_action": "PONG"}
+          const pong_response = {"id": msg["id"], "origin_action": "PONG"}
           console.log(`Sending PONG: ${JSON.stringify(pong_response)}`.green);
           ws.send(json.dumps(pong_response))
         }
@@ -214,7 +214,7 @@ class Bot {
           );
         } else if (msg.action === 'PONG') {
           console.log(`Received PONG: ${JSON.stringify(msg)}`.blue);
-          pong_response = {"id": msg["id"], "origin_action": "PONG"}
+          const pong_response = {"id": msg["id"], "origin_action": "PONG"}
           console.log(`Sending PONG: ${JSON.stringify(pong_response)}`.green);
           ws.send(json.dumps(pong_response))
         }
@@ -321,7 +321,7 @@ class Bot {
           );
         } else if (msg.action === 'PONG') {
           console.log(`Received PONG: ${JSON.stringify(msg)}`.blue);
-          pong_response = {"id": msg["id"], "origin_action": "PONG"}
+          const  pong_response = {"id": msg["id"], "origin_action": "PONG"}
           console.log(`Sending PONG: ${JSON.stringify(pong_response)}`.green);
           ws.send(json.dumps(pong_response))
         }
@@ -429,7 +429,7 @@ class Bot {
         `Sent ping - IP: ${proxyIP}, Message: ${JSON.stringify(pingMessage)}`
           .cyan
       );
-    }, 1000);
+    }, 26000);
   }
 }
 
