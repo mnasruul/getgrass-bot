@@ -109,7 +109,7 @@ class Bot {
           console.log(`Received PONG: ${JSON.stringify(msg)}`.blue);
           const pong_response = {"id": msg["id"], "origin_action": "PONG"}
           console.log(`Sending PONG: ${JSON.stringify(pong_response)}`.green);
-          ws.send(json.dumps(pong_response))
+          ws.send(JSON.stringify(pong_response))
         }
       });
 
@@ -216,7 +216,7 @@ class Bot {
           console.log(`Received PONG: ${JSON.stringify(msg)}`.blue);
           const pong_response = {"id": msg["id"], "origin_action": "PONG"}
           console.log(`Sending PONG: ${JSON.stringify(pong_response)}`.green);
-          ws.send(json.dumps(pong_response))
+          ws.send(JSON.stringify(pong_response))
         }
       });
 
@@ -323,7 +323,7 @@ class Bot {
           console.log(`Received PONG: ${JSON.stringify(msg)}`.blue);
           const  pong_response = {"id": msg["id"], "origin_action": "PONG"}
           console.log(`Sending PONG: ${JSON.stringify(pong_response)}`.green);
-          ws.send(json.dumps(pong_response))
+          ws.send(JSON.stringify(pong_response))
         }
       });
 
