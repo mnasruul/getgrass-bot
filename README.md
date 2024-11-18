@@ -1,5 +1,5 @@
 # getgrass-bot
-
+##Support for multiple accounts, multiple proxies, and the ability to operate in Desktop, Lite, and Node modes with a single command, including a fake user agent."
 This repository contains the code for `getgrass-bot`, a bot designed to establish WebSocket connections through various HTTP and SOCKS proxies, specifically aimed at farming for Grass Airdrop Season 2.
 
 ## Overview
@@ -28,12 +28,14 @@ sudo apt install -y nodejs
    ```bash
    npm install
    ```
+## Docker
+1. docker compose up --build -d
 
 ## Usage
 
 1. Obtain your user ID from the Getgrass website:
 
-   - Visit [https://app.getgrass.io/dashboard](https://app.getgrass.io/register/?referralCode=NXZg3yAsUsXKzy2).
+   - Visit [https://app.getgrass.io/dashboard](https://app.getgrass.io/register/?referralCode=UX5_BdqakEsiLKG).
    - Open your browser's developer tools (usually by pressing F12 or right-clicking and selecting "Inspect").
    - Go to the "Console" tab.
    - Paste the following command and press Enter:
@@ -68,9 +70,7 @@ sudo apt install -y nodejs
 
 If you would like to support the development of this project, you can make a donation using the following addresses:
 
-- **Solana**: `GLQMG8j23ookY8Af1uLUg4CQzuQYhXcx56rkpZkyiJvP`
-- **EVM**: `0x960EDa0D16f4D70df60629117ad6e5F1E13B8F44`
-- **BTC**: `bc1p9za9ctgwwvc7amdng8gvrjpwhnhnwaxzj3nfv07szqwrsrudfh6qvvxrj8`
+- **ETH**: `0xC64b3105A2454cf7c03356b1905cA80b899bEaB8`
 
 ## License
 
