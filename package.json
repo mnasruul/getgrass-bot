@@ -25,6 +25,7 @@
     "fake-useragent": "^1.0.1",
     "https-proxy-agent": "^7.0.4",
     "inquirer": "^8.2.6",
+    "pino": "^9.5.0",
     "socks-proxy-agent": "^8.0.2",
     "uuid": "^9.0.1",
     "ws": "^8.16.0"

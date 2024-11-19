@@ -2,6 +2,7 @@ require('colors');
 const inquirer = require('inquirer');
 const Bot = require('./src/Bot');
 const Config = require('./src/Config');
+const logger = require('pino')()
 const {
   fetchProxies,
   readLines,
@@ -11,7 +12,7 @@ const { delay, displayHeader } = require('./src/utils');
 
 async function main() {
   displayHeader();
-  console.log(`Please wait...\n`.yellow);
+  logger.info(`Please wait...\n`.yellow);
 
   await delay(1000);
 
@@ -29,7 +30,7 @@ const proxySource = {
   } else if (proxySource.type === 'url') {
     proxies = await fetchProxies(proxySource.source);
   } else if (proxySource.type === 'none') {
-    console.log('No proxy selected. Connecting directly.'.cyan);
+    logger.info('No proxy selected. Connecting directly.'.cyan);
   }
 
   if (proxySource.type !== 'none' && proxies.length === 0) {
@@ -37,7 +38,7 @@ const proxySource = {
     return;
   }
 
-  console.log(
+  logger.info(
     proxySource.type !== 'none'
       ? `Loaded ${proxies.length} proxies`.green
       : 'Direct connection mode enabled.'.green
@@ -49,7 +50,7 @@ const proxySource = {
     return;
   }
 
-  console.log(`Loaded ${userIDs.length} user IDs\n`.green);
+  logger.info(`Loaded ${userIDs.length} user IDs\n`.green);
 
   const methods = ["desktop", "lite", "node"];
 

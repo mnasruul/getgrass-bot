@@ -5,6 +5,7 @@ const { v4: uuidv4 } = require('uuid');
 const { SocksProxyAgent } = require('socks-proxy-agent');
 const { HttpsProxyAgent } = require('https-proxy-agent');
 const fakeUa = require('fake-useragent');
+const logger = require('pino')()
 class Bot {
   constructor(config) {
     this.config = config;
@@ -18,10 +19,10 @@ class Bot {
     //   const response = await axios.get(this.config.ipCheckURL, {
     //     httpsAgent: agent,
     //   });
-    //   console.log(`Connected through proxy ${proxy}`.green);
+    //   logger.info(`Connected through proxy ${proxy}`.green);
     //   return response.data;
     // } catch (error) {
-    //   console.error(
+    //   logger.error(
     //     `Skipping proxy ${proxy} due to connection error: ${error.message}`
     //       .yellow
     //   );
@@ -52,11 +53,11 @@ class Bot {
       const proxyInfo = await this.getProxyIP(formattedProxy);
 
       if (!proxyInfo) {
-        console.error(`Proxy ${formattedProxy} is not reachable.`.red);
+        logger.error(`Proxy ${formattedProxy} is not reachable.`.red);
         return;
       }
 
-      console.log(`Formatted Proxy: ${formattedProxy}`.cyan);
+      logger.info(`Formatted Proxy: ${formattedProxy}`.cyan);
 
       const agent = formattedProxy.startsWith('http')
         ? new HttpsProxyAgent(formattedProxy)
@@ -64,7 +65,7 @@ class Bot {
 
       const wsURL = `wss://${this.config.wssHost}`;
       const userAgent = fakeUa();
-      console.log(`User-Agent: ${userAgent}`.cyan);
+      logger.info(`User-Agent: ${userAgent}`.cyan);
       const ws = new WebSocket(wsURL, {
         agent,
         headers: {
@@ -80,14 +81,14 @@ class Bot {
       });
 
       ws.on('open', () => {
-        console.log(`Connected to ${formattedProxy} via Desktop`.cyan);
-        console.log(`Proxy IP Info: ${JSON.stringify(proxyInfo)}`.magenta);
+        logger.info(`Connected to ${formattedProxy} via Desktop`.cyan);
+        logger.info(`Proxy IP Info: ${JSON.stringify(proxyInfo)}`.magenta);
         this.sendPing(ws, proxyInfo.ip);
       });
 
       ws.on('message', (message) => {
         const msg = JSON.parse(message);
-        console.log(`Received message: ${JSON.stringify(msg)}`.blue);
+        logger.info(`Received message: ${JSON.stringify(msg)}`.blue);
 
         if (msg.action === 'AUTH') {
           const authResponse = {
@@ -103,19 +104,19 @@ class Bot {
             },
           };
           ws.send(JSON.stringify(authResponse));
-          console.log(
+          logger.info(
             `Sent auth response: ${JSON.stringify(authResponse)}`.green
           );
         } else if (msg.action === 'PONG') {
-          console.log(`Received PONG: ${JSON.stringify(msg)}`.blue);
+          logger.info(`Received PONG: ${JSON.stringify(msg)}`.blue);
           const pong_response = {"id": msg["id"], "origin_action": "PONG"}
-          console.log(`Sending PONG: ${JSON.stringify(pong_response)}`.green);
+          logger.info(`Sending PONG: ${JSON.stringify(pong_response)}`.green);
           ws.send(JSON.stringify(pong_response))
         }
       });
 
       ws.on('close', (code, reason) => {
-        console.log(
+        logger.info(
           `WebSocket closed with code: ${code}, reason: ${reason}`.yellow
         );
         setTimeout(
@@ -125,13 +126,13 @@ class Bot {
       });
 
       ws.on('error', (error) => {
-        console.error(
+        logger.error(
           `WebSocket error on proxy ${formattedProxy}: ${error.message}`.red
         );
         ws.terminate();
       });
     } catch (error) {
-      console.error(
+      logger.error(
         `Failed to connect with proxy ${proxy}: ${error.message}`.red
       );
     }
@@ -158,11 +159,11 @@ class Bot {
       const proxyInfo = await this.getProxyIP(formattedProxy);
 
       if (!proxyInfo) {
-        console.error(`Proxy ${formattedProxy} is not reachable.`.red);
+        logger.error(`Proxy ${formattedProxy} is not reachable.`.red);
         return;
       }
 
-      console.log(`Formatted Proxy: ${formattedProxy}`.cyan);
+      logger.info(`Formatted Proxy: ${formattedProxy}`.cyan);
 
       const agent = formattedProxy.startsWith('http')
         ? new HttpsProxyAgent(formattedProxy)
@@ -186,14 +187,14 @@ class Bot {
       });
 
       ws.on('open', () => {
-        console.log(`Connected to ${formattedProxy} via Lite`.cyan);
-        console.log(`Proxy IP Info: ${JSON.stringify(proxyInfo)}`.magenta);
+        logger.info(`Connected to ${formattedProxy} via Lite`.cyan);
+        logger.info(`Proxy IP Info: ${JSON.stringify(proxyInfo)}`.magenta);
         this.sendPing(ws, proxyInfo.ip);
       });
 
       ws.on('message', (message) => {
         const msg = JSON.parse(message);
-        console.log(`Received message: ${JSON.stringify(msg)}`.blue);
+        logger.info(`Received message: ${JSON.stringify(msg)}`.blue);
 
         if (msg.action === 'AUTH') {
           const authResponse = {
@@ -210,19 +211,19 @@ class Bot {
             },
           };
           ws.send(JSON.stringify(authResponse));
-          console.log(
+          logger.info(
             `Sent auth response: ${JSON.stringify(authResponse)}`.green
           );
         } else if (msg.action === 'PONG') {
-          console.log(`Received PONG: ${JSON.stringify(msg)}`.blue);
+          logger.info(`Received PONG: ${JSON.stringify(msg)}`.blue);
           const pong_response = {"id": msg["id"], "origin_action": "PONG"}
-          console.log(`Sending PONG: ${JSON.stringify(pong_response)}`.green);
+          logger.info(`Sending PONG: ${JSON.stringify(pong_response)}`.green);
           ws.send(JSON.stringify(pong_response))
         }
       });
 
       ws.on('close', (code, reason) => {
-        console.log(
+        logger.info(
           `WebSocket closed with code: ${code}, reason: ${reason}`.yellow
         );
         setTimeout(
@@ -232,13 +233,13 @@ class Bot {
       });
 
       ws.on('error', (error) => {
-        console.error(
+        logger.error(
           `WebSocket error on proxy ${formattedProxy}: ${error.message}`.red
         );
         ws.terminate();
       });
     } catch (error) {
-      console.error(
+      logger.error(
         `Failed to connect with proxy ${proxy}: ${error.message}`.red
       );
     }
@@ -265,11 +266,11 @@ class Bot {
       const proxyInfo = await this.getProxyIP(formattedProxy);
 
       if (!proxyInfo) {
-        console.error(`Proxy ${formattedProxy} is not reachable.`.red);
+        logger.error(`Proxy ${formattedProxy} is not reachable.`.red);
         return;
       }
 
-      console.log(`Formatted Proxy: ${formattedProxy}`.cyan);
+      logger.info(`Formatted Proxy: ${formattedProxy}`.cyan);
 
       const agent = formattedProxy.startsWith('http')
         ? new HttpsProxyAgent(formattedProxy)
@@ -293,14 +294,14 @@ class Bot {
       });
 
       ws.on('open', () => {
-        console.log(`Connected to ${formattedProxy} via Node`.cyan);
-        console.log(`Proxy IP Info: ${JSON.stringify(proxyInfo)}`.magenta);
+        logger.info(`Connected to ${formattedProxy} via Node`.cyan);
+        logger.info(`Proxy IP Info: ${JSON.stringify(proxyInfo)}`.magenta);
         this.sendPing(ws, proxyInfo.ip);
       });
 
       ws.on('message', (message) => {
         const msg = JSON.parse(message);
-        console.log(`Received message: ${JSON.stringify(msg)}`.blue);
+        logger.info(`Received message: ${JSON.stringify(msg)}`.blue);
 
         if (msg.action === 'AUTH') {
           const authResponse = {
@@ -317,19 +318,19 @@ class Bot {
             },
           };
           ws.send(JSON.stringify(authResponse));
-          console.log(
+          logger.info(
             `Sent auth response: ${JSON.stringify(authResponse)}`.green
           );
         } else if (msg.action === 'PONG') {
-          console.log(`Received PONG: ${JSON.stringify(msg)}`.blue);
+          logger.info(`Received PONG: ${JSON.stringify(msg)}`.blue);
           const  pong_response = {"id": msg["id"], "origin_action": "PONG"}
-          console.log(`Sending PONG: ${JSON.stringify(pong_response)}`.green);
+          logger.info(`Sending PONG: ${JSON.stringify(pong_response)}`.green);
           ws.send(JSON.stringify(pong_response))
         }
       });
 
       ws.on('close', (code, reason) => {
-        console.log(
+        logger.info(
           `WebSocket closed with code: ${code}, reason: ${reason}`.yellow
         );
         setTimeout(
@@ -339,13 +340,13 @@ class Bot {
       });
 
       ws.on('error', (error) => {
-        console.error(
+        logger.error(
           `WebSocket error on proxy ${formattedProxy}: ${error.message}`.red
         );
         ws.terminate();
       });
     } catch (error) {
-      console.error(
+      logger.error(
         `Failed to connect with proxy ${proxy}: ${error.message}`.red
       );
     }
@@ -368,13 +369,13 @@ class Bot {
       });
 
       ws.on('open', () => {
-        console.log(`Connected directly without proxy`.cyan);
+        logger.info(`Connected directly without proxy`.cyan);
         this.sendPing(ws, 'Direct IP');
       });
 
       ws.on('message', (message) => {
         const msg = JSON.parse(message);
-        console.log(`Received message: ${JSON.stringify(msg)}`.blue);
+        logger.info(`Received message: ${JSON.stringify(msg)}`.blue);
 
         if (msg.action === 'AUTH') {
           const authResponse = {
@@ -390,16 +391,16 @@ class Bot {
             },
           };
           ws.send(JSON.stringify(authResponse));
-          console.log(
+          logger.info(
             `Sent auth response: ${JSON.stringify(authResponse)}`.green
           );
         } else if (msg.action === 'PONG') {
-          console.log(`Received PONG: ${JSON.stringify(msg)}`.blue);
+          logger.info(`Received PONG: ${JSON.stringify(msg)}`.blue);
         }
       });
 
       ws.on('close', (code, reason) => {
-        console.log(
+        logger.info(
           `WebSocket closed with code: ${code}, reason: ${reason}`.yellow
         );
         setTimeout(
@@ -409,11 +410,11 @@ class Bot {
       });
 
       ws.on('error', (error) => {
-        console.error(`WebSocket error: ${error.message}`.red);
+        logger.error(`WebSocket error: ${error.message}`.red);
         ws.terminate();
       });
     } catch (error) {
-      console.error(`Failed to connect directly: ${error.message}`.red);
+      logger.error(`Failed to connect directly: ${error.message}`.red);
     }
   }
 
@@ -426,7 +427,7 @@ class Bot {
         data: {},
       };
       ws.send(JSON.stringify(pingMessage));
-      console.log(
+      logger.info(
         `Sent ping - IP: ${proxyIP}, Message: ${JSON.stringify(pingMessage)}`
           .cyan
       );
