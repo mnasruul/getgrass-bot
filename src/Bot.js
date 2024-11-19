@@ -11,22 +11,23 @@ class Bot {
   }
 
   async getProxyIP(proxy) {
-    const agent = proxy.startsWith('http')
-      ? new HttpsProxyAgent(proxy)
-      : new SocksProxyAgent(proxy);
-    try {
-      const response = await axios.get(this.config.ipCheckURL, {
-        httpsAgent: agent,
-      });
-      console.log(`Connected through proxy ${proxy}`.green);
-      return response.data;
-    } catch (error) {
-      console.error(
-        `Skipping proxy ${proxy} due to connection error: ${error.message}`
-          .yellow
-      );
-      return null;
-    }
+    // const agent = proxy.startsWith('http')
+    //   ? new HttpsProxyAgent(proxy)
+    //   : new SocksProxyAgent(proxy);
+    // try {
+    //   const response = await axios.get(this.config.ipCheckURL, {
+    //     httpsAgent: agent,
+    //   });
+    //   console.log(`Connected through proxy ${proxy}`.green);
+    //   return response.data;
+    // } catch (error) {
+    //   console.error(
+    //     `Skipping proxy ${proxy} due to connection error: ${error.message}`
+    //       .yellow
+    //   );
+    //   return null;
+    // }
+    return { ip: proxy };
   }
 
   async connectToProxy(proxy, userID) {
